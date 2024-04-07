@@ -46,12 +46,18 @@ export class UserController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
+    if (!isUUID(id))
+      throw new BadRequestException(`Id "${id}" is not UUID type`);
+
     await this.userServer.updateUserPassword(id, updateUserDto);
   }
 
   @Delete(':id')
   @HttpCode(200)
   removeUser(@Param('id') id: string) {
+    if (!isUUID(id))
+      throw new BadRequestException(`Id "${id}" is not UUID type`);
+
     if (this.userServer.delete(id)) return;
     throw new NotFoundException(`id "${id}" not found`);
   }
