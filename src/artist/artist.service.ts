@@ -25,19 +25,19 @@ export class ArtistService {
   }
 
   updateArtist(id: string, updateDto: UpdateArtistDto) {
-    const indexOfUser = this.artists.findIndex((v) => v.id === id);
-    if (indexOfUser === -1) throw new NotFoundException();
-    this.artists[indexOfUser] = {
-      ...this.artists[indexOfUser],
+    const indexOfArtist = this.artists.findIndex((v) => v.id === id);
+    if (indexOfArtist === -1) throw new NotFoundException();
+    this.artists[indexOfArtist] = {
+      ...this.artists[indexOfArtist],
       name: updateDto.name,
       grammy: updateDto.grammy,
     };
   }
 
   delete(id: string) {
-    const indexOfUser = this.artists.findIndex((v) => v.id === id);
-    if (indexOfUser > -1) {
-      this.artists.splice(indexOfUser, 1);
+    const indexOfArtist = this.artists.findIndex((v) => v.id === id);
+    if (indexOfArtist > -1) {
+      this.artists.splice(indexOfArtist, 1);
       return true;
     }
     return false;
