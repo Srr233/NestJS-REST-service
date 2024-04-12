@@ -11,9 +11,9 @@ import {
 import { AlbumService } from './album.service';
 import { CreateAlbumtDto } from './dto/CreateAlbumDto';
 import { UpdateAlbumtDto } from './dto/UpdateAlbumDto';
-import { isUUID } from 'src/service/isUuid';
+import { isUUID } from 'src/service/isUUID';
 
-@Controller('artist')
+@Controller('album')
 export class AlbumController {
   constructor(private albumService: AlbumService) {}
 
