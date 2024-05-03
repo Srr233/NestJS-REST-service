@@ -10,7 +10,6 @@ describe('UserController (e2e)', () => {
   let app: INestApplication;
   let dto: CreateUserDto;
   let updateUserDto: UpdateUserDto;
-  const favMock = {};
   const userVersion = '1';
   beforeEach(async () => {
     dto = { login: 'login', password: 'password' };
