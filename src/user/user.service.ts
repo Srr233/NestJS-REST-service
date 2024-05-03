@@ -6,15 +6,15 @@ import {
 import { User_I } from './interfaces/User';
 import { randomUUID } from 'crypto';
 import { CreateUserDto } from './dto/CreateUserDto';
-import { hashPassword } from 'src/service/hashPassword';
+import { hashPassword } from '../service/hashPassword';
 import { UpdateUserDto } from './dto/UpdateUserDto';
-import { compareUser } from 'src/service/comparePassword';
+import { compareUser } from '../service/comparePassword';
 
 @Injectable()
 export class UserService {
   private readonly users: User_I[] = [];
 
-  findAll() {
+  async findAll() {
     return this.users;
   }
 
@@ -37,9 +37,11 @@ export class UserService {
   async updateUserPassword(id: string, updateDto: UpdateUserDto) {
     const indexOfUser = this.users.findIndex((v) => v.id === id);
     if (indexOfUser === -1) throw new NotFoundException();
-    if (
-      await compareUser(updateDto.oldPassword, this.users[indexOfUser].password)
-    ) {
+    const isCurrentUser = await compareUser(
+      updateDto.oldPassword,
+      this.users[indexOfUser].password,
+    );
+    if (isCurrentUser) {
       this.users[indexOfUser].password = await hashPassword(
         updateDto.newPassword,
       );

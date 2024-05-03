@@ -1,11 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { Artist } from './interfaces/Artist';
 import { CreateArtistDto } from './dto/CreateArtistDto';
 import { randomUUID } from 'crypto';
 import { UpdateArtistDto } from './dto/UpdateArtistDto';
+import { FavoritesService } from '../favorites/favorites.service';
 
 @Injectable()
 export class ArtistService {
+  constructor(
+    @Inject(forwardRef(() => FavoritesService))
+    private readonly favoriteService: FavoritesService,
+  ) {}
   private readonly artists: Artist[] = [];
 
   findAll() {
@@ -36,10 +46,9 @@ export class ArtistService {
 
   delete(id: string) {
     const indexOfArtist = this.artists.findIndex((v) => v.id === id);
-    if (indexOfArtist > -1) {
-      this.artists.splice(indexOfArtist, 1);
-      return true;
-    }
-    return false;
+    if (indexOfArtist < 0) throw new NotFoundException();
+    this.artists.splice(indexOfArtist, 1);
+    this.favoriteService.deleteArtist(id);
+    return true;
   }
 }

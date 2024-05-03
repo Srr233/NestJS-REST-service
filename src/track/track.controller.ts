@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
-import { isUUID } from 'src/service/isUuid';
+import { isUUID } from '../service/isUuid';
 import { CreateTrackDto } from './dto/CreateTrackDto';
 import { UpdateTrackDto } from './dto/UpdateTrackDto';
 

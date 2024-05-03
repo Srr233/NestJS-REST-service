@@ -11,7 +11,7 @@ import {
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/CreateArtistDto';
 import { UpdateArtistDto } from './dto/UpdateArtistDto';
-import { isUUID } from 'src/service/isUuid';
+import { isUUID } from '../service/isUUID';
 
 @Controller('artist')
 export class ArtistController {

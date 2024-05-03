@@ -2,8 +2,16 @@ import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { ArtistModule } from './artist/artist.module';
 import { TrackModule } from './track/track.module';
+import { FavoritesModule } from './favorites/favorites.module';
+import { AlbumModule } from './albums/album.module';
 
 @Module({
-  imports: [UserModule, ArtistModule, TrackModule],
+  imports: [
+    UserModule,
+    ArtistModule,
+    TrackModule,
+    AlbumModule,
+    FavoritesModule,
+  ],
 })
 export class AppModule {}

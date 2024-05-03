@@ -14,19 +14,19 @@ import { CreateUserDto } from './dto/CreateUserDto';
 import { UpdateUserDto } from './dto/UpdateUserDto';
 import { UserService } from './user.service';
 import { UUID } from 'crypto';
-import { isUUID } from 'src/service/isUuid';
+import { isUUID } from '../service/isUuid';
 
 @Controller('user')
 export class UserController {
   constructor(private userServer: UserService) {}
 
   @Get()
-  getAllUsers() {
+  async getAllUsers() {
     return this.userServer.findAll();
   }
 
   @Get(':id')
-  getSingleUser(@Param('id') id: string) {
+  async getSingleUser(@Param('id') id: string) {
     if (!isUUID(id))
       throw new BadRequestException(`Id "${id}" is not UUID type`);
     const user = this.userServer.findOne(id as UUID);
@@ -37,8 +37,8 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Body() createUserDto: CreateUserDto) {
-    this.userServer.create(createUserDto);
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    await this.userServer.create(createUserDto);
   }
 
   @Put(':id')
