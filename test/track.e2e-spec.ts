@@ -15,6 +15,7 @@ describe('TrackController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
   });
+
   const updateDto: UpdateTrackDto = {
     name: 'TrackUpdate',
     artistId: null,

@@ -48,13 +48,13 @@ export class FavoritesService {
   addAlbum(id: string) {
     const album = this.albumService.findOne(id);
     if (!album) throw new UnprocessableEntityException();
-    this.favorites.tracks.push(album.id);
+    this.favorites.albums.push(album.id);
   }
 
   addArtist(id: string) {
     const artist = this.artistService.findOne(id);
     if (!artist) throw new UnprocessableEntityException();
-    this.favorites.tracks.push(artist.id);
+    this.favorites.artists.push(artist.id);
   }
 
   deleteTrack(id: string) {

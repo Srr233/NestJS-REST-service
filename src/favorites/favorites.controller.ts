@@ -35,11 +35,10 @@ export class FavoritesController {
     this.favsService.addArtist(id);
   }
 
-  // DONT FORGET TO MAKE DELETE LOGIC!
   @Delete('track/:id')
   deleteTrack(@Param('id') id: string) {
     if (!isUUID(id)) throw new BadRequestException('not correct UUID id');
-    this.deleteTrack(id);
+    this.favsService.deleteTrack(id);
   }
 
   @Delete('album/:id')
