@@ -61,23 +61,20 @@ export class FavoritesService {
     const indexOfTrack = this.favorites.tracks.findIndex(
       (track) => track === id,
     );
-    if (indexOfTrack < 0) throw new NotFoundException();
-    this.favorites.tracks.splice(indexOfTrack, 1);
+    if (indexOfTrack > -1) this.favorites.tracks.splice(indexOfTrack, 1);
   }
 
   deleteAlbum(id: string) {
     const indexOfAlbum = this.favorites.albums.findIndex(
       (track) => track === id,
     );
-    if (indexOfAlbum < 0) throw new NotFoundException();
-    this.favorites.albums.splice(indexOfAlbum, 1);
+    if (indexOfAlbum > -1) this.favorites.albums.splice(indexOfAlbum, 1);
   }
 
   deleteArtist(id: string) {
     const indexOfArtist = this.favorites.artists.findIndex(
       (track) => track === id,
     );
-    if (indexOfArtist < 0) return;
-    this.favorites.artists.splice(indexOfArtist, 1);
+    if (indexOfArtist > -1) this.favorites.artists.splice(indexOfArtist, 1);
   }
 }

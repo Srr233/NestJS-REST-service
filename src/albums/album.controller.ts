@@ -7,6 +7,7 @@ import {
   Param,
   Put,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumtDto } from './dto/CreateAlbumDto';
@@ -26,7 +27,9 @@ export class AlbumController {
   findOne(@Param('id') id: string) {
     if (!isUUID(id))
       throw new BadRequestException(`Id "${id}" is not UUID type`);
-    return this.albumService.findOne(id);
+    const album = this.albumService.findOne(id);
+    if (album) return album;
+    throw new NotFoundException();
   }
 
   @Post()

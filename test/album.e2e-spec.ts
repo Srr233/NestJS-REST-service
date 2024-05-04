@@ -2,43 +2,68 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AlbumModule } from '../src/albums/album.module';
-import { FavoritesModule } from '../src/favorites/favorites.module';
-import { CreateAlbumtDto } from 'src/albums/dto/CreateAlbumDto';
+import { CreateAlbumtDto } from '../src/albums/dto/CreateAlbumDto';
+import { UpdateAlbumtDto } from '../src/albums/dto/UpdateAlbumDto';
 
-describe('AppController (e2e)', () => {
+describe('AlbumController (e2e)', () => {
   let app: INestApplication;
-  const favMock = {};
-  let dto: CreateAlbumtDto;
-  beforeEach(async () => {
-    dto = { artistId: null, name: 'fanom', year: 123 };
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AlbumModule],
-    })
-      .overrideProvider(FavoritesModule)
-      .useValue(favMock)
-      .compile();
+    }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
+  const updateDto: UpdateAlbumtDto = {
+    name: 'nhoJ',
+    artistId: null,
+    year: 2001,
+  };
+  const albumTestDto: CreateAlbumtDto = {
+    name: 'John',
+    artistId: null,
+    year: 2000,
+  };
 
-  it('/album (GET)', () => {
-    return request(app.getHttpServer()).get('/album').expect(200);
+  let currAlbumData;
+  it('/album (GET)', async () => {
+    await request(app.getHttpServer()).get('/album').expect(200);
   });
 
-  it('/album (POST and GET)', async () => {
-    await request(app.getHttpServer()).post('/album').send(dto);
+  it('/album (POST)', async () => {
+    await request(app.getHttpServer())
+      .post('/album')
+      .send(albumTestDto)
+      .expect(201);
+  });
 
+  it('/album/:id (GET)', async () => {
     await request(app.getHttpServer())
       .get('/album')
+      .expect(200)
       .then((response) => {
-        const body = response.body;
-        expect(body[0]).toEqual({
-          id: expect.any(String),
-          artistId: null,
-          name: 'fanom',
-          year: 123,
-        });
+        currAlbumData = response.body[0];
       });
+
+    await request(app.getHttpServer())
+      .get(`/album/${currAlbumData.id}`)
+      .expect(200);
+  });
+
+  it('/album/:id (PUT)', async () => {
+    await request(app.getHttpServer())
+      .put(`/album/${currAlbumData.id}`)
+      .send(updateDto)
+      .expect(200);
+  });
+
+  it('/album/:id (DELETE)', async () => {
+    await request(app.getHttpServer())
+      .delete(`/album/${currAlbumData.id}`)
+      .expect(200);
+    await request(app.getHttpServer())
+      .get(`/album/${currAlbumData.id}`)
+      .expect(404);
   });
 });
