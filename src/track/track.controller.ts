@@ -7,6 +7,7 @@ import {
   Delete,
   Post,
   Put,
+  NotFoundException,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { isUUID } from '../service/isUuid';
@@ -26,7 +27,9 @@ export class TrackController {
   findOne(@Param('id') id: string) {
     if (!isUUID(id))
       throw new BadRequestException(`Id "${id}" is not UUID type`);
-    return this.trackService.findOne(id);
+    const track = this.trackService.findOne(id);
+    if (track) return track;
+    throw new NotFoundException();
   }
 
   @Post()
