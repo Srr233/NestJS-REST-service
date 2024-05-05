@@ -13,10 +13,16 @@ import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/CreateArtistDto';
 import { UpdateArtistDto } from './dto/UpdateArtistDto';
 import { isUUID } from '../service/isUUID';
+import { AlbumService } from '../albums/album.service';
+import { TrackService } from '../track/track.service';
 
 @Controller('artist')
 export class ArtistController {
-  constructor(private artistService: ArtistService) {}
+  constructor(
+    private artistService: ArtistService,
+    private albumService: AlbumService,
+    private trackService: TrackService,
+  ) {}
 
   @Get()
   findAll() {
@@ -52,5 +58,8 @@ export class ArtistController {
     if (!isUUID(id))
       throw new BadRequestException(`Id "${id}" is not UUID type`);
     this.artistService.delete(id);
+
+    this.albumService.deleteArtistFromAlbums(id);
+    this.trackService.deleteArtistFromTrack(id);
   }
 }

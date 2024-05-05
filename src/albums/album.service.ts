@@ -50,4 +50,9 @@ export class AlbumService {
       this.favoritesService.deleteAlbum(id);
     }
   }
+
+  deleteArtistFromAlbums(id: string) {
+    const indexOfAlbum = this.albums.findIndex((v) => v.artistId === id);
+    if (indexOfAlbum > -1) this.albums.splice(indexOfAlbum, 1);
+  }
 }

@@ -49,4 +49,9 @@ export class TrackService {
     this.tracks.splice(indexOfTrack, 1);
     this.favoriteService.deleteTrack(id);
   }
+
+  deleteArtistFromTrack(id: string) {
+    const indexOfAlbum = this.tracks.findIndex((v) => v.artistId === id);
+    if (indexOfAlbum > -1) this.tracks.splice(indexOfAlbum, 1);
+  }
 }
